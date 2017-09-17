@@ -1,52 +1,63 @@
+'use strict'
 import React from 'react';
-import { AppRegistry, Component, StyleSheet, Text, View, ListView } from 'react-native';
-import ViewContainer from './app/components/ViewContainer'
+import { AppRegistry, Component, StyleSheet } from 'react-native';
+import PeopleIndexScreen from './app/screens/PeopleIndexScreen';
+import CustomComponents from 'react-native-deprecated-custom-components';
+import PersonShowScreen from './app/screens/PersonShowScreen';
+// const events = [
+//   {location: 'Create'},
+//   {location: 'Join'}
+// ]
 
-const events = [
-  {location: 'Hardrock'},
-  {location: 'Luxor'}
-]
+// {ident: "PeopleIndex"}
+// {ident: "PeopleShow",
+//   personId: 14}
+export default class index extends   React.Component {
+ 
+ _renderScene(route, navigator){
+  var globalNavigatorProps = { navigator }
 
-export default class App extends React.Component {
-  constructor(props) {
-    super(props);
-    var da = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 != r2})
-    this.state = {
-      eventsDataSource: ds.cloneWithRows(events)
-    };
+  switch(route.ident) {
+    case "PeopleIndex":
+      return (
+        <PeopleIndexScreen {...globalNavigatorProps} />
+      )
+
+    case "PersonShow":
+      return(
+         <PersonShowScreen {...globalNavigatorProps}
+          event={route.person} />
+        
+        )
+    
+    default:
+      return (
+        <PeopleIndexScreen {...globalNavigatorProps} />
+      )
   }
-  render() {
+
+ } 
+
+  render(){
     return (
-      <ViewContainer>
-        <Text>{'Hewllo'}></Text>
-        <ListView
-          style={{marginTop: 100}}
-          dataSource-{this.state.eventsDataSource}
-          renderRow={(event) => { return this._renderEventRow(event) }}
-      </ViewContainer>
-    );
+      <CustomComponents.Navigator 
+        initialRoute={{ident: "PeopleIndex"}}
+        ref="appNavigator"
+        style={styles.navigatorStyles}
+        renderScene={this._renderScene}
+        configureScene={(route) => ({
+            ...route.sceneConfig || CustomComponents.Navigator.SceneConfigs.FloatFromRight })} />
+    )
   }
-}
 
-_renderEventRow(event){
-  return (
-    <View style={styles.eventRow}>
-      <Text style={stles.eventName}>{event.Location}</Text>
-    </View>
-  )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  eventRow:{
+
+  navigatorStyle : {
 
   }
-  eventName: {
 
-  }
 });
+
+AppRegistry.registerComponent('index', () => index)
