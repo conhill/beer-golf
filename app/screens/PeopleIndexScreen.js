@@ -23,7 +23,7 @@ export default class PeopleIndexScreen extends React.Component {
     return (
       <ViewContainer>
         <ListView
-          style={{marginTop: 100}}
+          contentContainerStyle={styles.container}
           dataSource={this.state.eventsDataSource}
           renderRow={(event) => { return this._renderEventRow(event) }} />
       </ViewContainer>
@@ -57,12 +57,20 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+    display: 'flex',
+    flexDirection: 'column',
   },
   eventRow:{
     flexDirection: 'row',
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
     alignItems: 'center',
-    height: 50
+    height: 50,
+    borderWidth: 1,
+    borderRadius: 6,
+    borderColor: 'black',
+    width: 200,
+    padding: 20,
+    margin: 20
   },
   eventName: {
     marginLeft: 25
